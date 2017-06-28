@@ -38,6 +38,23 @@ Theta2_grad = zeros(size(Theta2));
 %         variable J. After implementing Part 1, you can verify that your
 %         cost function computation is correct by verifying the cost
 %         computed in ex4.m
+Y = zeros(m, num_labels);
+for i = 1:m
+  Y(i,y(i,1)) = 1;
+end
+
+
+x = [ones(m,1) X];
+a1= x;
+a2 = sigmoid(a1 * Theta1');
+a2 = [ones(m,1) a2];
+h = sigmoid(a2 * Theta2');
+cost = -Y .* log(h) - (1.0 - Y) .* log(1.0 - h);
+temp1 = [zeros(size(Theta1,1),1) Theta1(:,2:end)];
+temp2 = [zeros(size(Theta2,1),1) Theta2(:,2:end)];
+temp1 = temp1.^2;
+temp2 = temp2.^2;
+J = 1/m*sum(cost(:)) + lambda/(2*m)*(sum(temp1(:)) + sum(temp2(:)));
 %
 % Part 2: Implement the backpropagation algorithm to compute the gradients
 %         Theta1_grad and Theta2_grad. You should return the partial derivatives of
@@ -53,6 +70,9 @@ Theta2_grad = zeros(size(Theta2));
 %         Hint: We recommend implementing backpropagation using a for-loop
 %               over the training examples if you are implementing it for the 
 %               first time.
+
+
+
 %
 % Part 3: Implement regularization with the cost function and gradients.
 %
@@ -61,25 +81,31 @@ Theta2_grad = zeros(size(Theta2));
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
 %
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+delta_1 = zeros(size(Theta1));
+delta_2 = zeros(size(Theta2));
+for t =1:m
+  % step 1
+  a_1 = X(t,:)';
+  a_1 = [1; a_1];
+  z_2 = Theta1 * a_1;
+  a_2 = sigmoid(z_2);
+  a_2 = [1;a_2];
+  a_3 = sigmoid(Theta2 * a_2);
+  %step 2
+  err_3 = a_3 - Y(t,:)';
+  %step 3
+  %err_3
+  err_2 = Theta2'*err_3;
+  err_2 = err_2(2:end).*sigmoidGradient(z_2);
+  %step 4
+  delta_2 = delta_2 + err_3 * a_2';
+  delta_1 = delta_1 + err_2 * a_1';
+end
+Theta_temp1 = [zeros(size(Theta1,1),1) Theta1(:,2:end)];
+Theta_temp2 = [zeros(size(Theta2,1),1) Theta2(:,2:end)];
+Theta1_grad = 1/ m * delta_1 + lambda/m * Theta_temp1;
+Theta2_grad = 1/ m * delta_2 + lambda/m * Theta_temp2;
+  
 % -------------------------------------------------------------
 
 % =========================================================================

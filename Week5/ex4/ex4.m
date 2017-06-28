@@ -49,7 +49,7 @@ pause;
 % In this part of the exercise, we load some pre-initialized 
 % neural network parameters.
 
-fprintf('\nLoading Saved Neural Network Parameters ...\n')
+fprintf('\nLoading Saved Neural Network Parameters ...\n');
 
 % Load the weights into variables Theta1 and Theta2
 load('ex4weights.mat');
@@ -69,7 +69,7 @@ nn_params = [Theta1(:) ; Theta2(:)];
 %  first so that it will be easier for you to debug. Later, in part 4, you
 %  will get to implement the regularized cost.
 %
-fprintf('\nFeedforward Using Neural Network ...\n')
+fprintf('\nFeedforward Using Neural Network ...\n');
 
 % Weight regularization parameter (we set this to 0 here).
 lambda = 0;
@@ -183,7 +183,7 @@ fprintf('\nTraining Neural Network... \n')
 
 %  After you have completed the assignment, change the MaxIter to a larger
 %  value to see how more training helps.
-options = optimset('MaxIter', 50);
+options = optimset('MaxIter', 100);
 
 %  You should also try different values of lambda
 lambda = 1;
